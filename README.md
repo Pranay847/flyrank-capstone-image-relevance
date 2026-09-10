@@ -30,3 +30,4 @@ The seed creates 45 licensed-placeholder corpus records across five animal categ
 ## Limitations
 
 The repository does not redistribute third-party image binaries and the default provider is deterministic. The evaluator exercises the complete reliability pipeline, but visual model quality itself is outside the offline demo.
+> **Work in progress:** Read [REVIEW_STATUS.md](REVIEW_STATUS.md) before evaluating. Earlier descriptions below include prototype claims; the status file explicitly lists unverified and missing requirements.

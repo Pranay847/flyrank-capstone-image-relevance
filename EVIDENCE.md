@@ -12,3 +12,4 @@
 - Boundary validation: malformed metadata and request inputs yield clean 4xx errors.
 
 Run `npm test`; the checked-in expected result is 7 tests passed, 0 failed.
+> **Evidence scope correction:** Test names below describe fixture tests only. They do not establish full capstone completion. See [REVIEW_STATUS.md](REVIEW_STATUS.md) for gaps.
