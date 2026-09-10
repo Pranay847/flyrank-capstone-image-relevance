@@ -1,5 +1,5 @@
 import { openDatabase } from './db.js';
-import { SUBJECTS } from './domain.js';
+import { SUBJECTS, embed } from './domain.js';
 
 export function seed(db, tenant = 'demo') {
   const addImage = db.prepare('INSERT OR IGNORE INTO images(tenant_id,filename,expected_subject) VALUES(?,?,?)');
@@ -19,8 +19,8 @@ export function seed(db, tenant = 'demo') {
     ['Bear hibernation', 'Why brown bears hibernate', 'brown bear'],
     ['Deer conservation', 'Protecting white-tailed deer corridors', 'white-tailed deer']
   ];
-  const addPost = db.prepare('INSERT INTO posts(tenant_id,title,body,expected_subject) VALUES(?,?,?,?)');
-  if (!db.prepare('SELECT 1 FROM posts WHERE tenant_id=?').get(tenant)) for (const p of posts) addPost.run(tenant, ...p);
+  const addPost = db.prepare('INSERT INTO posts(tenant_id,title,body,expected_subject,embedding_json) VALUES(?,?,?,?,?)');
+  if (!db.prepare('SELECT 1 FROM posts WHERE tenant_id=?').get(tenant)) for (const p of posts) addPost.run(tenant, ...p, JSON.stringify(embed(`${p[0]} ${p[1]}`)));
   return { images: db.prepare('SELECT COUNT(*) n FROM images WHERE tenant_id=?').get(tenant).n, posts: db.prepare('SELECT COUNT(*) n FROM posts WHERE tenant_id=?').get(tenant).n };
 }
 
