@@ -102,7 +102,7 @@ export class ImageService {
   }
 
   createPost(tenant, input) {
-    if (!input?.title || !input?.body) throw Object.assign(new Error('title and body are required'), { status: 400 });
+    if (typeof input?.title !== 'string' || typeof input?.body !== 'string' || !input.title.trim() || !input.body.trim()) throw Object.assign(new Error('title and body are required'), { status: 400 });
     const info = this.db.prepare('INSERT INTO posts(tenant_id,title,body,expected_subject,embedding_json) VALUES(?,?,?,?,?)')
       .run(tenant, input.title, input.body, canonicalSubject(`${input.title} ${input.body}`), json(embed(`${input.title} ${input.body}`)));
     this.db.prepare('INSERT INTO costs(tenant_id,operation,resource_id,units,microcents,created_at) VALUES(?,?,?,?,?,?)')

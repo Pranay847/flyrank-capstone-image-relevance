@@ -11,7 +11,10 @@ async function body(req) {
   let raw = '';
   for await (const chunk of req) { raw += chunk; if (raw.length > 32768) throw Object.assign(new Error('body too large'), { status: 413 }); }
   if (!raw) return {};
-  try { return JSON.parse(raw); } catch { throw Object.assign(new Error('invalid JSON'), { status: 400 }); }
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch { throw Object.assign(new Error('invalid JSON'), { status: 400 }); }
+  if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) throw Object.assign(new Error('JSON body must be an object'), { status: 400 });
+  return parsed;
 }
 
 export function createApp(options = {}) {
